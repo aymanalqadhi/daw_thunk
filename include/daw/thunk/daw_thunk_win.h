@@ -6,7 +6,8 @@
 // Official repository: https://github.com/beached/daw_thunk
 //
 
-#pragma once
+#ifndef DAW_THUNK_WIN_H
+#define DAW_THUNK_WIN_H
 
 #include "daw/daw_erased_callable.h"
 #include "impl/daw_function_traits.h"
@@ -76,7 +77,7 @@ namespace daw {
 		DAW_ATTRIB_NOINLINE explicit Thunk(
 		  void *user_data_pointer,
 		  Result ( *function_pointer )( void *, Params... ) ) {
-			static_assert( sizeof( Result( * )( void *, Params... ) ) ==
+			static_assert( sizeof( Result ( * )( void *, Params... ) ) ==
 			                 sizeof( void * ),
 			               "Unexpected function pointer size" );
 			void *tmp = ::VirtualAlloc( nullptr, sizeof( thunk_t ),
@@ -127,3 +128,5 @@ namespace daw {
 		return Thunk( make_erased_callable( f ) );
 	}
 }; // namespace daw
+
+#endif /* ifndef DAW_THUNK_WIN_H */

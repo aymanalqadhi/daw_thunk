@@ -6,9 +6,11 @@
 // Official repository: https://github.com/beached/json_rpc
 //
 
-#pragma once
+#ifndef DAW_THUNK_IMPL_FUNCTION_TRAITS_H
+#define DAW_THUNK_IMPL_FUNCTION_TRAITS_H
 
 #include <cstddef>
+#include <tuple>
 #include <utility>
 
 namespace daw::func {
@@ -63,3 +65,5 @@ namespace daw::func {
 		};
 	};
 } // namespace daw::func
+
+#endif /* ifndef DAW_THUNK_IMPL_FUNCTION_TRAITS_H */

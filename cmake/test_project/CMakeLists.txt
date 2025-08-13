@@ -17,7 +17,7 @@ project("install-test"
 
 add_executable(${PROJECT_NAME} test.cpp)
 target_compile_options(${PROJECT_NAME} INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/permissive->)
-target_link_libraries( ${PROJECT_NAME} PRIVATE daw::daw-thunk )
+target_link_libraries(${PROJECT_NAME} PRIVATE daw::daw-thunk)
 
 enable_testing()
 add_test(${PROJECT_NAME}_test ${PROJECT_NAME})

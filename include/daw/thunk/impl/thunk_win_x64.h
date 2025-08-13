@@ -6,7 +6,8 @@
 // Official repository: https://github.com/beached/daw_thunk
 //
 
-#pragma once
+#ifndef DAW_THUNK_IMPL_THUNK_WIN_X64_H
+#define DAW_THUNK_IMPL_THUNK_WIN_X64_H
 
 #include "thunk_arch.h"
 
@@ -370,3 +371,5 @@ namespace daw::thunk_impl {
 
 	} // namespace win_x64
 } // namespace daw::thunk_impl
+
+#endif /* ifndef DAW_THUNK_IMPL_THUNK_WIN_X64_H */

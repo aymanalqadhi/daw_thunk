@@ -6,7 +6,8 @@
 // Official repository: https://github.com/beached/daw_thunk
 //
 
-#pragma once
+#ifndef DAW_THUNK_POSIX_H
+#define DAW_THUNK_POSIX_H
 
 #include "daw/daw_erased_callable.h"
 #include "impl/daw_function_traits.h"
@@ -123,3 +124,5 @@ namespace daw {
 		return Thunk( make_erased_callable( f ) );
 	}
 }; // namespace daw
+
+#endif /* ifndef DAW_THUNK_POSIX_H */

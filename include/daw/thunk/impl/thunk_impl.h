@@ -6,7 +6,8 @@
 // Official repository: https://github.com/beached/daw_thunk
 //
 
-#pragma once
+#ifndef DAW_THUNK_IMPL_IMPL_H
+#define DAW_THUNK_IMPL_IMPL_H
 
 #include "thunk_arch.h"
 
@@ -21,3 +22,5 @@
 #elif DAW_THUNK_ARCH == DAW_THUNK_ARCH_C_aapcs64
 #include "thunk_aapcs64.h"
 #endif
+
+#endif /* ifndef DAW_THUNK_IMPL_IMPL_H */

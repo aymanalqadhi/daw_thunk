@@ -6,7 +6,8 @@
 // Official repository: https://github.com/beached/daw_thunk
 //
 
-#pragma once
+#ifndef DAW_ERASED_CALLABLE_H
+#define DAW_ERASED_CALLABLE_H
 
 #include "thunk/impl/daw_function_traits.h"
 
@@ -73,3 +74,5 @@ namespace daw {
 		  daw::func::function_traits<std::remove_reference_t<Func>>>{ f };
 	}
 } // namespace daw
+
+#endif /* ifndef DAW_ERASED_CALLABLE_H */

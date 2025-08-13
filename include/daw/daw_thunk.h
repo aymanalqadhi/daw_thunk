@@ -6,10 +6,13 @@
 // Official repository: https://github.com/beached/daw_thunk
 //
 
-#pragma once
+#ifndef DAW_THUNK_H
+#define DAW_THUNK_H
 
 #if defined( _WIN32 )
 #include "thunk/daw_thunk_win.h"
 #elif defined( __GNUC__ )
 #include "thunk/daw_thunk_posix.h"
 #endif
+
+#endif /* ifndef DAW_THUNK_H */

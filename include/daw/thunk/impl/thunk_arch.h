@@ -6,7 +6,8 @@
 // Official repository: https://github.com/beached/daw_thunk
 //
 
-#pragma once
+#ifndef DAW_THUNK_IMPL_THUNK_ARCH_H
+#define DAW_THUNK_IMPL_THUNK_ARCH_H
 
 /// \brief Theses constants will be the value of DAW_THUNK_ARCH
 #define DAW_THUNK_ARCH_C_sysv_x86 0
@@ -52,3 +53,5 @@
 #if not defined( DAW_THUNK_ARCH )
 #error Unsupported Architecture
 #endif
+
+#endif /* ifndef DAW_THUNK_IMPL_THUNK_ARCH_H */
