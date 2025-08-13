@@ -15,8 +15,8 @@
 #include <daw/daw_attributes.h>
 
 #include <cstring>
+#include <exception>
 #include <memory>
-#include <stdexcept>
 #include <string_view>
 #include <sys/mman.h>
 #include <type_traits>
