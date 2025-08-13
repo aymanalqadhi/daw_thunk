@@ -10,8 +10,6 @@
 
 #include "thunk_arch.h"
 
-#include <daw/daw_cxmath.h>
-
 #include <cstddef>
 #include <type_traits>
 
@@ -119,7 +117,7 @@ namespace daw::thunk_impl {
 
 			template<std::size_t N>
 			static constexpr std::uint32_t op_mov( ) noexcept {
-			constexpr auto dst = ( ParamCount - N );
+				constexpr auto dst = ( ParamCount - N );
 				constexpr auto src = dst - 1;
 				return mov_reg<dst, src>( );
 			}

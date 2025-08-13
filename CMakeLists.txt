@@ -8,13 +8,6 @@ project( daw-thunk
 
 set( CMAKE_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are requested." )
 
-option(DAW_USE_PACKAGE_MANAGEMENT "Do not use FetchContent and assume dependencies are installed" OFF)
-if (NOT DAW_USE_PACKAGE_MANAGEMENT)
-    add_subdirectory(extern)
-else ()
-    find_package(daw-header-libraries REQUIRED)
-endif ()
-
 include_directories( "${CMAKE_SOURCE_DIR}/include" )
 
 include(GNUInstallDirs)
@@ -28,7 +21,6 @@ set(PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 
 add_library(${PROJECT_NAME} INTERFACE)
 add_library(daw::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
-target_link_libraries(${PROJECT_NAME} INTERFACE daw::daw-header-libraries )
 
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
 target_include_directories(${PROJECT_NAME}

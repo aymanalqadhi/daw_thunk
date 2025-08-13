@@ -12,8 +12,7 @@
 #include "impl/daw_function_traits.h"
 #include "impl/thunk_impl.h"
 
-#include <daw/daw_attributes.h>
-
+#include <cstddef>
 #include <cstring>
 #include <exception>
 #include <memory>
@@ -22,7 +21,7 @@
 #include <type_traits>
 
 namespace daw {
-	[[noreturn]] DAW_ATTRIB_INLINE void do_error( std::string_view /*sv*/ ) {
+	[[noreturn]] inline void do_error( std::string_view /*sv*/ ) {
 		std::terminate( );
 		// throw std::runtime_error(static_cast<std::string>(sv));
 	}
@@ -72,10 +71,9 @@ namespace daw {
 
 		Thunk( ) = default;
 
-		DAW_ATTRIB_NOINLINE explicit Thunk(
-		  void *user_data_pointer,
-		  Result ( *function_pointer )( void *, Params... ) ) {
-			static_assert( sizeof( Result( * )( void *, Params... ) ) ==
+		inline explicit Thunk( void *user_data_pointer,
+		                       Result ( *function_pointer )( void *, Params... ) ) {
+			static_assert( sizeof( Result ( * )( void *, Params... ) ) ==
 			                 sizeof( void * ),
 			               "Unexpected function pointer size" );
 			// Assuming that mmap results are sufficiently aligned
@@ -104,7 +102,7 @@ namespace daw {
 		explicit Thunk( Func &f )
 		  : Thunk( erased_callable<Result( Params... )>( f ) ) {}
 
-		using thunked_fp_t = daw::traits::make_fp<Result( Params... )>;
+		using thunked_fp_t = std::add_pointer_t<Result( Params... )>;
 		thunked_fp_t get( ) const & {
 			return reinterpret_cast<thunked_fp_t>( thunk.get( ) );
 		}

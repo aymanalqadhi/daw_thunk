@@ -10,9 +10,6 @@
 
 #include "thunk/impl/daw_function_traits.h"
 
-#include <daw/daw_attributes.h>
-#include <daw/daw_traits.h>
-
 #include <cassert>
 #include <memory>
 #include <type_traits>
@@ -28,13 +25,12 @@ namespace daw {
 	/// @tparam Params The parameter types of the function
 	template<typename Result, typename... Params>
 	struct erased_callable<Result( Params... )> {
-		using function_t = daw::traits::make_fp<Result( void *, Params... )>;
+		using function_t = std::add_pointer_t<Result( void *, Params... )>;
 		void *data = nullptr;
 		function_t fp = nullptr;
 
 		template<typename Func>
-		DAW_ATTRIB_INLINE static Result invoke_callable( void *data,
-		                                                 Params... args ) {
+		inline static Result invoke_callable( void *data, Params... args ) {
 			assert( data );
 			auto &callable =
 			  *reinterpret_cast<std::remove_reference_t<Func> *>( data );
@@ -46,7 +42,8 @@ namespace daw {
 		                                         std::nullptr_t> = nullptr>
 		explicit erased_callable( Func &&func ) noexcept
 		  : data( static_cast<void *>(
-		      const_cast<daw::remove_cvref_t<Func> *>( std::addressof( func ) ) ) )
+		      const_cast<std::remove_cv_t<std::remove_reference_t<Func>> *>(
+		        std::addressof( func ) ) ) )
 		  , fp( invoke_callable<Func> ) {}
 
 		template<typename Func,

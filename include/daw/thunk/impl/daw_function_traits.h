@@ -8,22 +8,10 @@
 
 #pragma once
 
-#include <daw/daw_fwd_pack_apply.h>
-#include <daw/daw_traits.h>
+#include <cstddef>
+#include <utility>
 
 namespace daw::func {
-	namespace impl {
-		template<typename A>
-		using type_t = typename A::type;
-
-		template<template<std::size_t> class Arguments, typename>
-		struct make_arg_pack;
-
-		template<template<std::size_t> class Arguments, std::size_t... Is>
-		struct make_arg_pack<Arguments, std::index_sequence<Is...>> {
-			using type = fwd_pack<type_t<Arguments<Is>>...>;
-		};
-	} // namespace impl
 	template<typename, typename = void>
 	struct function_traits;
 
@@ -34,14 +22,13 @@ namespace daw::func {
 	template<typename R, typename... Args>
 	struct function_traits<R( Args... )> {
 		using result_t = R;
-		using params_t = fwd_pack<Args...>;
 
 		static constexpr std::size_t arity = sizeof...( Args );
 
 		template<std::size_t N>
 		struct argument {
 			static_assert( N < arity, "error: invalid parameter index." );
-			using type = typename pack_element<N, fwd_pack<Args...>>::type;
+			using type = std::tuple_element_t<N, std::tuple<Args...>>;
 		};
 	};
 
@@ -74,9 +61,5 @@ namespace daw::func {
 			static_assert( N < arity, "error: invalid parameter index." );
 			using type = typename call_type::template argument<N + 1>::type;
 		};
-
-		using params_t =
-		  typename impl::make_arg_pack<argument,
-		                               std::make_index_sequence<arity>>::type;
 	};
 } // namespace daw::func
