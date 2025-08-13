@@ -10,7 +10,6 @@
 #define DAW_THUNK_POSIX_H
 
 #include "daw/daw_erased_callable.h"
-#include "impl/daw_function_traits.h"
 #include "impl/thunk_impl.h"
 
 #include <cstddef>

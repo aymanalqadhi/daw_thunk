@@ -33,7 +33,7 @@ target_sources(${PROJECT_NAME}
       include/daw/daw_erased_callable.h
 )
 
-target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 
 # ##############################################################################
 # Testing

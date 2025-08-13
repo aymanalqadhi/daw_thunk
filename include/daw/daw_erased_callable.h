@@ -9,7 +9,7 @@
 #ifndef DAW_ERASED_CALLABLE_H
 #define DAW_ERASED_CALLABLE_H
 
-#include "thunk/impl/daw_function_traits.h"
+#include "daw/detail/function_traits.h"
 
 #include <cassert>
 #include <cstddef>
@@ -55,24 +55,22 @@ public:
   erased_callable(Func&&) = delete;
 };
 
-namespace erased_callable_impl {
-template <typename FT, std::size_t... Is>
-auto make_erased_callable_fn(std::index_sequence<Is...>) -> erased_callable<
-    typename FT::result_t(typename FT::template argument<Is>::type...)>;
-
-template <typename FT>
-using make_erased_callable_t = decltype(make_erased_callable_fn<FT>(
-    std::make_index_sequence<FT::arity>{}));
-} // namespace erased_callable_impl
-
 /// \brief A function to help make erased_callable types by deducing the
 /// result type and parameter types from the func provided \tparam Func class
 /// type of the function \param f function object \return A erased_callable
 /// with the appropriate Result and Params... types
-template <typename Func>
-constexpr auto make_erased_callable(Func& f) {
-  return erased_callable_impl::make_erased_callable_t<
-      daw::func::function_traits<std::remove_reference_t<Func>>>{f};
+// template <typename Func>
+// constexpr auto make_erased_callable(Func& f) {
+//   return erased_callable_impl::make_erased_callable_t<
+//       daw::detail::function_traits<std::remove_reference_t<Func>>>{f};
+// }
+
+template <typename Fn>
+constexpr decltype(auto) make_erased_callable(Fn& fn) {
+  using traits = typename daw::detail::function_traits<Fn>;
+  using no_rec = typename traits::template erase_param<0>;
+
+  return erased_callable<typename no_rec::signature_t>{fn};
 }
 
 } // namespace daw
