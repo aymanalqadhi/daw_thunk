@@ -9,9 +9,9 @@
 #ifndef DAW_THUNK_H
 #define DAW_THUNK_H
 
-#if defined( _WIN32 )
+#if defined(_WIN32)
 #include "thunk/daw_thunk_win.h"
-#elif defined( __GNUC__ )
+#elif defined(__GNUC__)
 #include "thunk/daw_thunk_posix.h"
 #endif
 

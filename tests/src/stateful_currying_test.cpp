@@ -11,23 +11,21 @@
 #include <exception>
 #include <iostream>
 
-int func( int ( *callback )( int ) ) {
-	return callback( 5 ) * 2;
+int func(int (*callback)(int)) {
+  return callback(5) * 2;
 }
 
-int cb( int x, int y ) {
-	return x + y;
+int cb(int x, int y) {
+  return x + y;
 }
 
-int main( ) {
-	int x = 42;
-	auto f = [x]( int y ) {
-		return cb( x, y );
-	};
-	auto th = daw::make_thunk( f );
-	auto result = func( th );
-	if( result != 94 ) {
-		std::cerr << "Unexpected result\n";
-		std::terminate( );
-	}
+int main() {
+  int x       = 42;
+  auto f      = [x](int y) { return cb(x, y); };
+  auto th     = daw::make_thunk(f);
+  auto result = func(th);
+  if (result != 94) {
+    std::cerr << "Unexpected result\n";
+    std::terminate();
+  }
 }

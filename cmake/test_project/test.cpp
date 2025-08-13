@@ -8,17 +8,14 @@
 
 #include <daw/daw_thunk.h>
 
-#include <cstdio>
 #include <cassert>
+#include <cstdio>
 
-int main( int argc, char ** argv ) {
-	int x = 0;
-	auto lambda = [&x] {
-		++x;
-	};
-	auto th = daw::make_thunk( lamba );
-	th( );
-	th( );
-	assert( x == 2 );
+int main(int argc, char** argv) {
+  int x       = 0;
+  auto lambda = [&x] { ++x; };
+  auto th     = daw::make_thunk(lamba);
+  th();
+  th();
+  assert(x == 2);
 }
-

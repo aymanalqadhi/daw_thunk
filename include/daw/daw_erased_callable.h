@@ -17,62 +17,62 @@
 
 namespace daw {
 
-	template<typename>
-	struct erased_callable;
+template <typename>
+struct erased_callable;
 
-	/// \brief Construct a type erased callable suitable to pass to api's with a
-	/// function pointer/void * state first param
-	/// @tparam Result The result type of the function
-	/// @tparam Params The parameter types of the function
-	template<typename Result, typename... Params>
-	struct erased_callable<Result( Params... )> {
-		using function_t = std::add_pointer_t<Result( void *, Params... )>;
-		void *data = nullptr;
-		function_t fp = nullptr;
+/// \brief Construct a type erased callable suitable to pass to api's with a
+/// function pointer/void * state first param
+/// @tparam Result The result type of the function
+/// @tparam Params The parameter types of the function
+template <typename Result, typename... Params>
+struct erased_callable<Result(Params...)> {
+  using function_t = std::add_pointer_t<Result(void*, Params...)>;
+  void* data       = nullptr;
+  function_t fp    = nullptr;
 
-		template<typename Func>
-		inline static Result invoke_callable( void *data, Params... args ) {
-			assert( data );
-			auto &callable =
-			  *reinterpret_cast<std::remove_reference_t<Func> *>( data );
-			return callable( static_cast<Params>( args )... );
-		}
+  template <typename Func>
+  inline static Result invoke_callable(void* data, Params... args) {
+    assert(data);
+    auto& callable = *reinterpret_cast<std::remove_reference_t<Func>*>(data);
+    return callable(static_cast<Params>(args)...);
+  }
 
-	public:
-		template<typename Func, std::enable_if_t<std::is_lvalue_reference_v<Func>,
-		                                         std::nullptr_t> = nullptr>
-		explicit erased_callable( Func &&func ) noexcept
-		  : data( static_cast<void *>(
-		      const_cast<std::remove_cv_t<std::remove_reference_t<Func>> *>(
-		        std::addressof( func ) ) ) )
-		  , fp( invoke_callable<Func> ) {}
+public:
+  template <typename Func,
+            std::enable_if_t<std::is_lvalue_reference_v<Func>, std::nullptr_t> =
+                nullptr>
+  explicit erased_callable(Func&& func) noexcept
+      : data(static_cast<void*>(
+            const_cast<std::remove_cv_t<std::remove_reference_t<Func>>*>(
+                std::addressof(func)))),
+        fp(invoke_callable<Func>) {}
 
-		template<typename Func,
-		         std::enable_if_t<not std::is_lvalue_reference_v<Func>,
-		                          std::nullptr_t> = nullptr>
-		erased_callable( Func && ) = delete;
-	};
+  template <typename Func,
+            std::enable_if_t<not std::is_lvalue_reference_v<Func>,
+                             std::nullptr_t> = nullptr>
+  erased_callable(Func&&) = delete;
+};
 
-	namespace erased_callable_impl {
-		template<typename FT, std::size_t... Is>
-		auto make_erased_callable_fn( std::index_sequence<Is...> )
-		  -> erased_callable<
-		    typename FT::result_t( typename FT::template argument<Is>::type... )>;
+namespace erased_callable_impl {
+template <typename FT, std::size_t... Is>
+auto make_erased_callable_fn(std::index_sequence<Is...>) -> erased_callable<
+    typename FT::result_t(typename FT::template argument<Is>::type...)>;
 
-		template<typename FT>
-		using make_erased_callable_t = decltype( make_erased_callable_fn<FT>(
-		  std::make_index_sequence<FT::arity>{ } ) );
-	} // namespace erased_callable_impl
+template <typename FT>
+using make_erased_callable_t = decltype(make_erased_callable_fn<FT>(
+    std::make_index_sequence<FT::arity>{}));
+} // namespace erased_callable_impl
 
-	/// \brief A function to help make erased_callable types by deducing the
-	/// result type and parameter types from the func provided \tparam Func class
-	/// type of the function \param f function object \return A erased_callable
-	/// with the appropriate Result and Params... types
-	template<typename Func>
-	constexpr auto make_erased_callable( Func &f ) {
-		return erased_callable_impl::make_erased_callable_t<
-		  daw::func::function_traits<std::remove_reference_t<Func>>>{ f };
-	}
+/// \brief A function to help make erased_callable types by deducing the
+/// result type and parameter types from the func provided \tparam Func class
+/// type of the function \param f function object \return A erased_callable
+/// with the appropriate Result and Params... types
+template <typename Func>
+constexpr auto make_erased_callable(Func& f) {
+  return erased_callable_impl::make_erased_callable_t<
+      daw::func::function_traits<std::remove_reference_t<Func>>>{f};
+}
+
 } // namespace daw
 
 #endif /* ifndef DAW_ERASED_CALLABLE_H */

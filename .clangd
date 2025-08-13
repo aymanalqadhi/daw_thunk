@@ -1,0 +1,8 @@
+---
+CompileFlags:
+  Add: [-Wall, -Wextra, -pedantic]
+  CompilationDatabase: build
+
+Diagnostics:
+  MissingIncludes: Strict
+  UnusedIncludes: None
