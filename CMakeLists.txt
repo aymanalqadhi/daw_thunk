@@ -107,5 +107,3 @@ install(FILES
   DESTINATION lib/cmake/${PROJECT_NAME}
   COMPONENT DawDevelopment
 )
-
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/daw DESTINATION include)
